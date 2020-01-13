@@ -1,80 +1,108 @@
-***transdim***
+# transdim
+
+[![MIT License](https://img.shields.io/badge/license-MIT-green.svg)](https://opensource.org/licenses/MIT)
+![Python 3.7](https://img.shields.io/badge/Python-3.7-blue.svg)
+[![repo size](https://img.shields.io/github/repo-size/xinychen/transdim.svg)](https://github.com/xinychen/transdim/archive/master.zip)
+[![GitHub stars](https://img.shields.io/github/stars/xinychen/transdim.svg?logo=github&label=Stars&logoColor=white)](https://github.com/xinychen/transdim)
+
+![logo](https://github.com/xinychen/transdim/blob/master/images/transdim_logo_large.png)
+
+Machine learning models make important developments about spatiotemporal data modeling - like how to forecast near-future traffic states of road networks. But what happens when these models are built with incomplete data commonly collected in real-world systems?
+
+About the Project
 --------------
 
->**Trans**portation **d**ata **im**putation (***transdim***).
+In the **transdim** (**trans**portation **d**ata **im**putation) project, we build machine learning models to help address some of the toughest challenges of spatiotemporal data modeling - from missing data imputation to time series prediction. The strategic aim of this project is **creating accurate and efficient solutions for spatiotemporal traffic data imputation and prediction tasks**.
 
-Contents
---------
+In a hurry? Please check out our contents as follows.
 
--   [Strategic aim](#strategic-aim)
--   [Tasks and challenges](#tasks-and-challenges)
 
-  	[[Missing data imputation](#missing-data-imputation)] [[Rolling traffic prediction](#rolling-traffic-prediction)]
--   [What we do just now!](#what-we-do-just-now)
--   [What we care about!](#what-we-care-about)
--   [Overview](#overview)
--   [Selected References](#selected-references):
-
-	[[Spatio-temporal forecasting](#spatio-temporal-forecasting)] [[Principal component analysis](#principal-component-analysis)] [[Guassian process](#gaussian-process)] [[Matrix factorization](#matrix-factorization)] [[Bayesian matrix and tensor factorization](#bayesian-matrix-and-tensor-factorization)] [[Low-rank tensor completion](#low-rank-tensor-completion)] [[Generative Adversarial Nets](#generative-adversarial-nets)] [[Variational Autoencoder](#variational-autoencoder)] [[Tensor regression](#tensor-regression)] [[Poisson matrix factorization](#poisson-matrix-factorization)] [[Graph signal processing](#graph-signal-processing)] [[Graph neural network](#graph-neural-network)] [[Missing data imputation](#missing-data-imputation)]
--   [Our Publications](#our-publications)
--   [License](#license)
-
-Strategic aim
+Tasks and Challenges
 --------------
 
->Creating accurate and efficient solutions for the spatio-temporal traffic data imputation and prediction tasks.
+> Missing data are there, whether we like them or not. The really interesting question is how to deal with incomplete data.
 
-Tasks and challenges
+- **Missing data imputation** 🔥
+
+  - Random missing (RM): Each sensor lost their observations at completely random. (★★★)
+  - Non-random missing (NM): Each sensor lost their observations during several days. (★★★★)
+
+<img src="https://github.com/xinychen/transdim/blob/master/images/framework.png" alt="drawing" width="800"/>
+
+> **Example**: Tensor completion framework for multi-dimensional missing traffic data imputation.
+
+- **Spatiotemporal prediction** 🔥
+  - Forecasting without missing values. (★★★)
+  - Forecasting with incomplete observations. (★★★★★)
+
+<img src="https://github.com/xinychen/awesome-latex-drawing/blob/master/Framework/rolling_prediction.png" alt="drawing" width="500"/>
+
+> **Example**: An illustration of single-step rolling prediction task under a matrix factorization framework.
+
+
+Implementation
 --------------
 
-- ### **Missing data imputation**
+### Open data
 
-  - **Random missing**: Each sensor lost their observations at completely random. (★★★)
-  - **Non-random missing**: Each sensor lost their observations during several days. (★★★★)
+In this repository, we have adapted the public data sets into our experiments. If you want to view these data sets, please run the following command in your Python console:
 
-- ### **Rolling traffic prediction**
+```python
+import scipy.io
 
-  - Forecasting **without missing values**. (★★★)
-  - Forecasting **with incomplete observations**. (★★★★★)
+tensor = scipy.io.loadmat('../datasets/Guangzhou-data-set/tensor.mat')
+tensor = tensor['tensor']
+random_matrix = scipy.io.loadmat('../datasets/Guangzhou-data-set/random_matrix.mat')
+random_matrix = random_matrix['random_matrix']
+random_tensor = scipy.io.loadmat('../datasets/Guangzhou-data-set/random_tensor.mat')
+random_tensor = random_tensor['random_tensor']
+```
 
-What we do just now!
---------------
+If you want to view the original data, please check out the following links:
 
-- add a **framework** indicating overall studies;
+- **Gdata**: [Guangzhou urban traffic speed data set](https://doi.org/10.5281/zenodo.1205228).
+- **Bdata**: [Birmingham parking data set](https://archive.ics.uci.edu/ml/datasets/Parking+Birmingham).
+- **Hdata**: [Hangzhou metro passenger flow data set](https://doi.org/10.5281/zenodo.3145403).
+- **Ndata**: [NYC taxi data set](https://www1.nyc.gov/site/tlc/about/tlc-trip-record-data.page).
+- **Sdata**: [Seattle freeway traffic speed data set](https://github.com/zhiyongc/Seattle-Loop-Data).
 
-![framework](https://github.com/xinychen/transdim/blob/master/images/framework.png)
+### Model implementation
 
-> *Framework*: Tensor completion task and its framework including **data organization** and **tensor completion**, in which traffic measurements are partially observed.
+In our experiments, we have implemented the machine learning models mainly on `Numpy`, and written these Python codes with **Jupyter Notebook**. So, if you want to evaluate these models, please download and run these notebooks directly (prerequisite: **download the data sets** before evaluation).
 
-- define the **problems** clearly;
+| Task     | Jupyter Notebook link | Gdata | Bdata | Hdata | Sdata | Ndata |
+| :---:    | :------------- | :------------: | :------------:  | :-----------: | :-----------: | :-------:|
+|Missing Data Imputation| [**BTMF**](https://nbviewer.jupyter.org/github/xinychen/transdim/blob/master/experiments/Imputation-BTMF.ipynb)           | ✅     | ✅     | ✅    | ✅ | 🔶 |
+|          | [**BayesTRMF**](https://nbviewer.jupyter.org/github/xinychen/transdim/blob/master/experiments/Imputation-BayesTRMF.ipynb) | ✅     | ✅     | ✅    | ✅ | 🔶 |
+|          | [**TRMF**](https://nbviewer.jupyter.org/github/xinychen/transdim/blob/master/experiments/Imputation-TRMF.ipynb) | ✅     | ✅     | ✅    | ✅ | 🔶 |
+|          | [**BPMF**](https://nbviewer.jupyter.org/github/xinychen/transdim/blob/master/experiments/Imputation-BPMF.ipynb) | ✅     | ✅     | ✅    | ✅ | 🔶 |
+|          | [**BGCP**](https://nbviewer.jupyter.org/github/xinychen/transdim/blob/master/experiments/Imputation-BGCP.ipynb) | ✅     | ✅     | ✅    | ✅ | ✅ |
+|          | [**HaLRTC**](https://nbviewer.jupyter.org/github/xinychen/transdim/blob/master/experiments/Imputation-HaLRTC.ipynb) | ✅     | ✅     | ✅    | ✅ | 🔶 |
+|          | [**TF-ALS**](https://nbviewer.jupyter.org/github/xinychen/transdim/blob/master/experiments/Imputation-TF-ALS.ipynb) | ✅     | ✅     | ✅    | ✅ | ✅ |
+|          | [**BTTF**](https://nbviewer.jupyter.org/github/xinychen/transdim/blob/master/experiments/Imputation-BTTF.ipynb) | 🔶     | 🔶     | 🔶    | 🔶 | ✅ |
+|          | [**BayesTRTF**](https://nbviewer.jupyter.org/github/xinychen/transdim/blob/master/experiments/Imputation-BayesTRTF.ipynb) | 🔶     | 🔶     | 🔶    | 🔶 | ✅ |
+|          | [**BPTF**](https://nbviewer.jupyter.org/github/xinychen/transdim/blob/master/experiments/Imputation-BPTF.ipynb) | 🔶     | 🔶     | 🔶    | 🔶 | ✅ |
+|Single-Step Prediction| [**BTMF**](https://nbviewer.jupyter.org/github/xinychen/transdim/blob/master/experiments/Prediction-ST-Online-BTMF.ipynb) | ✅     | ✅     | ✅    | ✅ | 🔶 |
+|          | [**BayesTRMF**](https://nbviewer.jupyter.org/github/xinychen/transdim/blob/master/experiments/Prediction-ST-Online-BayesTRMF.ipynb) | ✅     | ✅     | ✅    | ✅ | 🔶 |
+|          | [**TRMF**](https://nbviewer.jupyter.org/github/xinychen/transdim/blob/master/experiments/Prediction-ST-Online-TRMF.ipynb) | ✅     | ✅     | ✅    | ✅ | 🔶 |
+|          | [**BTTF**](https://nbviewer.jupyter.org/github/xinychen/transdim/blob/master/experiments/Prediction-ST-Online-BTTF.ipynb) | 🔶     | 🔶     | 🔶    | 🔶 | ✅ |
+|          | [**BayesTRTF**](https://nbviewer.jupyter.org/github/xinychen/transdim/blob/master/experiments/Prediction-ST-Online-BayesTRTF.ipynb) | 🔶     | 🔶     | 🔶    | 🔶 | ✅ |
+|          | [**TRTF**](https://nbviewer.jupyter.org/github/xinychen/transdim/blob/master/experiments/Prediction-ST-Online-TRTF.ipynb) | 🔶     | 🔶     | 🔶    | 🔶 | ✅ |
+|Multi-Step Prediction| [**BTMF**](https://nbviewer.jupyter.org/github/xinychen/transdim/blob/master/experiments/Prediction-Multi-BTMF.ipynb) | ✅     | ✅     | ✅    | ✅ | 🔶 |
+|           | [**BayesTRMF**](https://nbviewer.jupyter.org/github/xinychen/transdim/blob/master/experiments/Prediction-Multi-BayesTRMF.ipynb) | ✅     | ✅     | ✅    | ✅ | 🔶 |
+|           | [**TRMF**](https://nbviewer.jupyter.org/github/xinychen/transdim/blob/master/experiments/Prediction-Multi-TRMF.ipynb) | ✅     | ✅     | ✅    | ✅ | 🔶 |
+|          | [**BTTF**](https://nbviewer.jupyter.org/github/xinychen/transdim/blob/master/experiments/Prediction-Multi-BTTF.ipynb) | 🔶     | 🔶     | 🔶    | 🔶 | ✅ |
+|          | [**BayesTRTF**](https://nbviewer.jupyter.org/github/xinychen/transdim/blob/master/experiments/Prediction-Multi-BayesTRTF.ipynb) | 🔶     | 🔶     | 🔶    | 🔶 | ✅ |
+|          | [**TRTF**](https://nbviewer.jupyter.org/github/xinychen/transdim/blob/master/experiments/Prediction-Multi-TRTF.ipynb) | 🔶     | 🔶     | 🔶    | 🔶 | ✅ |
 
-    - Example: Traffic forecasting using matrix factorization models.
 
-		![example](https://github.com/xinychen/transdim/blob/master/images/rolling_prediction_strategy.png)
+* ✅ — Cover
+* 🔶 — Does not cover
+* 🚧 — Under development
 
-> *Real experiment setting*: Observations with **0%, 20% and 40% fiber missing rates** during first **56 days are treated as stationary inputs**. Meanwhile, there are some rolling inputs for **forecasting traffic speed during last 5 days (from Monday to Friday)** in a rolling manner.
+### Imputation/Prediction performance
 
-- describe the **core challenges** intuitively;
-- list **main contributions** of these studies.
-
-What we care about!
---------------
-
-- Best algebraic structure for data imputation.
-- The context of urban transportation (e.g., biases).
-- Data noise avoidance.
-- Competitive imputation and prediction performance.
-- Capable of various missing data scenarios.
-
-Overview
---------------
-
-   >With the development and application of intelligent transportation systems, large quantities of urban traffic data are collected on a continuous basis from various sources, such as loop detectors, cameras, and floating vehicles. These data sets capture the underlying states and dynamics of transportation networks and the whole system and become beneficial to many traffic operation and management applications, including routing, signal control, travel time prediction, and so on. However, the missing data problem is inevitable when collecting traffic data from intelligent transportation systems.
-
-### [Urban traffic speed data set of Guangzhou, China](https://doi.org/10.5281/zenodo.1205228)
-
-  >**Publicly available at our Zenodo repository!**
-
+- **Imputation example**
 
 ![example](https://github.com/xinychen/transdim/blob/master/images/estimated_series1.png)
   *(a) Time series of actual and estimated speed within two weeks from August 1 to 14.*
@@ -82,44 +110,26 @@ Overview
 ![example](https://github.com/xinychen/transdim/blob/master/images/estimated_series2.png)
   *(b) Time series of actual and estimated speed within two weeks from September 12 to 25.*
 
-> *The imputation performance of BGCP (CP rank r=15 and missing rate α=30%) under the fiber missing scenario with third-order tensor representation, where the estimated result of road segment #1 is selected as an example. In the both two panels, red rectangles represent fiber missing (i.e., speed observations are lost in a whole day).*
+> The imputation performance of BGCP (CP rank r=15 and missing rate α=30%) under the fiber missing scenario with third-order tensor representation, where the estimated result of road segment #1 is selected as an example. In the both two panels, red rectangles represent fiber missing (i.e., speed observations are lost in a whole day).
 
-### Machine learning models
+- **Prediction example**
 
-  - **Missing data imputation**
+![example](https://github.com/xinychen/transdim/blob/master/images/prediction_hangzhou.png)
 
-  > **Urban traffic speed data set** (i.e., [Guangzhou-data-set(Gdata)](https://github.com/xinychen/transdim/tree/master/Guangzhou-data-set)) registered traffic speed data from 214 road segments over two months (61 days from August 1 to September 30 in 2016) in Guangzhou, China. We organize the raw data into a time series matrix of (214, 8784). For tensor-based models, we use a third-order tensor (214, 61, 144) as input. Matrix based models are tested with the time series matrix (214, 8784).
+![example](https://github.com/xinychen/transdim/blob/master/images/prediction_nyc_heatmap.png)
 
-  > We consider two common missing data scenarios (i.e., **random missing (RM)** and **non-random missing (NM))**. For **RM**, we simply remove certain amount of observed entries in the matrix randomly and use these entries as ground truth to evaluate RMSE. For **NM**, we apply correlated fiber missing experiment by randomly choosing certain amount (e.g., 40%) (location, day) combinations and removing the whole time series in each combination.
+![example](https://github.com/xinychen/transdim/blob/master/images/prediction_nyc.png)
 
-|  Missingness | [BGCP](https://nbviewer.jupyter.org/github/xinychen/transdim/blob/master/Imputation-BGCP-Gdata.ipynb) | [BPMF](https://nbviewer.jupyter.org/github/xinychen/transdim/blob/master/Imputation-BPMF-Gdata.ipynb) | [PMF](https://nbviewer.jupyter.org/github/xinychen/transdim/blob/master/Imputation-PMF-Gdata.ipynb) | [GAIN](https://nbviewer.jupyter.org/github/xinychen/transdim/blob/master/Imputation-GAIN-Gdata.ipynb) |
-|---     |---    |---    |---    |---    |
-| 20%, RM | **3.5762** | 4.0403 | 4.0909 | 4.6718 |
-| 40%, RM | **3.5969** | 4.1578	| 4.2280 | 5.1776 |
-| 20%, NM | 4.4136 | 4.3828 | **4.3575** | 6.5500 |
-| 40%, NM | 4.6791 | 4.5586	| **4.4866** | 6.9947	|
-
-
-- ***BGCP***: Bayesian Gaussian CP decomposition (by [Chen et al., 2019](https://doi.org/10.1016/j.trc.2018.11.003)). [[Imputation example - Jupyter Notebook](http://nbviewer.jupyter.org/github/xinychen/transdim/blob/master/BGCP_example.ipynb)] [[Matlab code is also available!](https://github.com/lijunsun/bgcp_imputation)]
-
-- ***BPMF***: Bayesian probabilistic matrix factorization (by [Salakhutdinov et al., 2008](https://www.cs.toronto.edu/~amnih/papers/bpmf.pdf)).
-
-- ***PMF***: Probabilistic matrix factorization (by [Salakhutdinov et al., 2007](http://59.80.44.99/papers.nips.cc/paper/3208-probabilistic-matrix-factorization.pdf)).
-  - The [code1](https://github.com/adamzjw) and [code2](https://github.com/fuhailin/Probabilistic-Matrix-Factorization) have been adapted for our experiments.
-
-- ***GAIN***: Generative Adversarial Imputation Nets (by [Yoon et al., 2018](http://proceedings.mlr.press/v80/yoon18a/yoon18a.pdf)).
-  - The [code](https://github.com/jsyoon0823/GAIN) has been adapted for our implementation.
-
-- ***TRMF***: Temporal regularized matrix factorization. [[Matlab code is also available!](https://github.com/rofuyu/exp-trmf-nips16)]
-
-- ***HaLRTC***: High accuracy low rank tensor completion.
-
-
-
-Selected references
+References
 --------------
 
-- ### **Spatio-temporal forecasting**
+- ### **Spatiotemporal forecasting**
+
+  - Yuyang Wang, Alex Smola, Danielle C. Maddix, Jan Gasthaus, Dean Foster, Tim Januschowski, 2019. [*Deep Factors for Forecasting*](https://arxiv.org/pdf/1905.12417.pdf). ICML 2019. (★★★★★)
+  
+  - Danielle C. Maddix, Yuyang Wang, Alex Smola, 2018. [*Deep Factors with Gaussian Processes for Forecasting*](https://arxiv.org/pdf/1812.00098.pdf). arXiv.
+  
+  - Syama Sundar Rangapuram, Matthias Seeger, Jan Gasthaus, Lorenzo Stella, Yuyang Wang, Tim Januschowski, 2018. [*Deep State Space Models for Time Series Forecasting*](http://papers.nips.cc/paper/8004-deep-state-space-models-for-time-series-forecasting.pdf?nsukey=CoqM71tHuwiqTTDwkPRsu40QKdc%2BlY%2FWWNEiuEJaWd6sw7dUXlAT3mU122dvYrMHOYfANParRFLBDLgraANFjHdggEDRxbT9Kk2Mam6nZfVkQT4E2cRCMULUTPTFmjCeuBKHjDSSEs6L4Ci7JuyRqB2ojJnBKDD%2FkcAgdhwhJQa%2BLZ5owi4oVwnQrgWX5pTr0vTORENMdC59F4mqtOQENA%3D%3D). NeurIPS 2018.
 
   - San Gultekin, John Paisley, 2019. [*Online Forecasting Matrix Factorization*](https://ieeexplore.ieee.org/document/8590686/). IEEE Transactions on Signal Processing, 67(5): 1223-1236. [[Python code](https://github.com/chloemnge/online_learning)]
 
@@ -153,6 +163,8 @@ Selected references
   - Koh Takeuchi, Hisashi Kashima, Naonori Ueda, 2017. [*Autoregressive tensor factorization for spatio-temporal predictions*](https://doi.org/10.1109/ICDM.2017.146). 2017 IEEE International Conference on Data Mining (*ICDM 2017*).
 
   - Shun-Yao Shih, Fan-Keng Sun, Hung-yi Lee, 2018. [*Temporal pattern attention for multivariate time series forecasting*](https://arxiv.org/pdf/1809.04206v2.pdf). arXiv.
+  
+  - Dingxiong Deng, Cyrus Shahabi, Ugur Demiryurek, Linhong Zhu, Rose Yu, Yan Liu, 2016. [*Latent space model for road networks to predict time-varying traffic*](http://roseyu.com/Papers/kdd2016.pdf). Proceedings of the 22rd ACM SIGKDD international conference on Knowledge discovery and data mining (*KDD 2016*).
 
 - ### **Principal component analysis**
 
@@ -174,6 +186,8 @@ Selected references
 
   - John Bradshaw, Alexander G. de G. Matthews, Zoubin Ghahramani, 2017. [*Adversarial examples, uncertainty, and transfer testing robustness in Gaussian process hybrid deep networks*](https://arxiv.org/pdf/1707.02476.pdf). arXiv.
 
+  - David Salinas, Michael Bohlke-Schneider, Laurent Callot, Roberto Medico, Jan Gasthaus, 2019. [*High-Dimensional Multivariate Forecasting with Low-Rank Gaussian Copula Processes*](https://arxiv.org/pdf/1910.03002.pdf). arXiv. (★★★★)
+
 - ### **Matrix factorization**
 
   - Nikhil Rao, Hsiangfu Yu, Pradeep Ravikumar, Inderjit S Dhillon, 2015. [*Collaborative filtering with graph information: Consistency and scalable methods*](http://www.cs.utexas.edu/~rofuyu/papers/grmf-nips.pdf). Neural Information Processing Systems (*NIPS 2015*). [[Matlab code](http://bigdata.ices.utexas.edu/publication/collaborative-filtering-with-graph-information-consistency-and-scalable-methods/)]
@@ -185,6 +199,8 @@ Selected references
 - ### **Bayesian matrix and tensor factorization**
 
   - Ruslan Salakhutdinov, Andriy Mnih, 2008. [*Bayesian probabilistic matrix factorization using Markov chain Monte Carlo*](https://www.cs.toronto.edu/~amnih/papers/bpmf.pdf). Proceedings of the 25th International Conference on Machine Learning (*ICML 2008*), Helsinki, Finland. [[Matlab code (official)](https://www.cs.toronto.edu/~rsalakhu/BPMF.html)] [[Python code](https://github.com/LoryPack/BPMF)] [[Julia and C++ code](https://github.com/ExaScience/bpmf)] [[Julia code](https://github.com/RottenFruits/BPMF.jl)]
+
+  - Neil D. Lawrence, Raquel Urtasun, 2009. [*Non-linear Matrix Factorization with Gaussian Processes*](http://people.ee.duke.edu/~lcarin/MatrixFactorization.pdf). ICML 2009. (★★★★★)
 
   - Ilya Sutskever, Ruslan Salakhutdinov, Joshua B. Tenenbaum, 2009. [*Modelling relational data using Bayesian clustered tensor factorization*](https://ece.duke.edu/~lcarin/pmfcrp.pdf). NIPS 2009.
 
@@ -199,6 +215,18 @@ Selected references
   - Qibin Zhao, Liqing Zhang, Andrzej Cichocki, 2015. [*Bayesian sparse Tucker models for dimension reduction and tensor completion*](https://arxiv.org/pdf/1505.02343.pdf). arXiv.
 
   - Piyush Rai, Yingjian Wang, Shengbo Guo, Gary Chen, David B. Dunsun,	Lawrence Carin, 2014. [*Scalable Bayesian low-rank decomposition of incomplete multiway tensors*](http://people.ee.duke.edu/~lcarin/mpgcp.pdf). Proceedings of the 31st International Conference on Machine Learning (*ICML 2014*), Beijing, China.
+
+  - Ömer Deniz Akyildiz, Theodoros Damoulas, Mark F. J. Steel, 2019. [*Probabilistic sequential matrix factorization*](https://arxiv.org/pdf/1910.03906.pdf). arXiv. (★★★★★)
+  
+- ### **Matrix completion on graphs**
+
+  - Vassilis Kalofolias, Xavier Bresson, Michael Bronstein, Pierre Vandergheynst, 2014. [*Matrix completion on graphs*](https://arxiv.org/abs/1408.1717). arXiv. (appear in NIPS 2014)
+
+  - Rianne van den Berg, Thomas N. Kipf, Max Welling, 2018. [*Graph convolutional matrix completion*](https://www.kdd.org/kdd2018/files/deep-learning-day/DLDay18_paper_32.pdf). Proceedings of the 24th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining (*KDD 2018*), London, UK.
+
+  - Federico Monti, Michael M. Bronstein, Xavier Bresson, 2017. [*Geometric Matrix Completion with Recurrent Multi-Graph Neural Networks*](https://papers.nips.cc/paper/6960-geometric-matrix-completion-with-recurrent-multi-graph-neural-networks.pdf). NIPS 2017.
+
+  - Tianyang Han, Kentaro Wada and Takashi Oguchi, 2019. [*Large-scale traffic data imputation using matrix completion on graphs*](http://doi.org/10.1109/ITSC.2019.8917365). IEEE Intelligent Transportation Systems Conference (ITSC), Auckland, New Zealand, 2019, pp. 2252-2258.
 
 - ### **Low-rank tensor completion**
 
@@ -222,17 +250,13 @@ Selected references
 
   - Zhiwei Deng, Rajitha Navarathna, Peter Carr, Stephan Mandt, Yisong Yue, 2017. [*Factorized variational autoencoders for modeling audience reactions to movies*](http://openaccess.thecvf.com/content_cvpr_2017/papers/Deng_Factorized_Variational_Autoencoders_CVPR_2017_paper.pdf). 2017 IEEE Conference on Computer Vision and Pattern Recognition (*CVPR 2017*), Honolulu, HI, USA.
 
-  - Vassilis Kalofolias, Xavier Bresson, Michael Bronstein, Pierre Vandergheynst, 2014. [*Matrix completion on graphs*](https://arxiv.org/abs/1408.1717). arXiv. (appear in NIPS 2014)
-
-  - Rianne van den Berg, Thomas N. Kipf, Max Welling, 2018. [*Graph convolutional matrix completion*](https://www.kdd.org/kdd2018/files/deep-learning-day/DLDay18_paper_32.pdf). Proceedings of the 24th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining (*KDD 2018*), London, UK.
-
   - [*Graph autoencoder - GitHub*](https://github.com/tkipf/gae).
 
   - Haowen Xu, Wenxiao Chen, Nengwen Zhao, Zeyan Li, Jiahao Bu, Zhihan Li, Ying Liu, Youjian Zhao, Dan Pei, Yang Feng, Jie Chen, Zhaogang Wang, Honglin Qiao, 2018. [*Unsupervised anomaly detection via variational auto-encoder for seasonal KPIs in web applications*](https://arxiv.org/pdf/1802.03903.pdf). *WWW 2018*.
 
   - John T. McCoy, Steve Kroon, Lidia Auret, 2018. [*Variational Autoencoders for missing data imputation with application to a simulated milling circuit*](https://doi.org/10.1016/j.ifacol.2018.09.406). IFAC-PapersOnLine, 51(21): 141-146. [[Python code](https://github.com/ProcessMonitoringStellenboschUniversity/IFAC-VAE-Imputation)] [[VAE demo](https://github.com/oduerr/dl_tutorial/blob/master/tensorflow/vae/vae_demo-2D.ipynb)]
 
-  - Pierre-Alexandre Mattei, Jes Frellsen, 2018. [missingIWAE: Deep generative modelling and imputation of incomplete data](http://bayesiandeeplearning.org/2018/papers/100.pdf). Third workshop on Bayesian Deep Learning (*NeurIPS 2018*), Montréal, Canada. [related slide](https://ai.ku.dk/ai-seminar-series/ai-seminar_jes-frellsen.pdf)
+  - Pierre-Alexandre Mattei, Jes Frellsen, 2018. [missingIWAE: Deep generative modelling and imputation of incomplete data](http://bayesiandeeplearning.org/2018/papers/100.pdf). Third workshop on Bayesian Deep Learning (*NeurIPS 2018*), Montréal, Canada. [[related slide](https://ai.ku.dk/ai-seminar-series/ai-seminar_jes-frellsen.pdf)]
 
 - ### **Tensor regression**
 
@@ -257,6 +281,8 @@ Selected references
   - Laurent Charlin, Rajesh Ranganath, James Mclnerney, 2015. [*Dynamic Poisson factorization*](http://www.cs.toronto.edu/~lcharlin/papers/2015_CharlinRanganathMcInerneyBlei.pdf). Proceedings of the 9th ACM Conference on Recommender Systems (*RecSys 2015*), Vienna, Italy. [[C++ code](https://github.com/blei-lab/DynamicPoissonFactorization)]
 
   - Seyed Abbas Hosseini, Keivan Alizadeh, Ali Khodadadi, Ali Arabzadeh, Mehrdad Farajtabar, Hongyuan Zha, Hamid R. Rabiee, 2017. [*Recurrent Poisson factorization for temporal recommendation*](https://dl.acm.org/citation.cfm?doid=3097983.3098197). Proceedings of the 23rd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining (*KDD 2017*), Halifax, Nova Scotia Canada. [[Matlab code](https://github.com/AHosseini/RPF)]
+
+  - Aaron Schein, Scott W. Linderman, Mingyuan Zhou, David M. Blei, Hanna Wallach, 2019. [*Poisson-Randomized Gamma Dynamical Systems*](https://arxiv.org/pdf/1910.12991.pdf). arXiv. (★★★★★)
 
 - ### **Graph signal processing**
 
@@ -286,35 +312,57 @@ Selected references
 
   - Dimitris Bertsimas, Colin Pawlowski, Ying Daisy Zhuo, 2018. [*From predictive methods to missing data imputation: An optimization approach*](http://jmlr.org/papers/v18/17-073.html). Journal of Machine Learning Research, 18(196): 1-39.
 
-  - Wei Cao, Dong Wang, Jian Li, Hao Zhou, Yitan Li, Lei Li, 2018. [*BRITS: Bidirectional Recurrent Imputation for Time Series*](https://papers.nips.cc/paper/7911-brits-bidirectional-recurrent-imputation-for-time-series.pdf). 32nd Conference on Neural Information Processing Systems (NeurIPS 2018), Montréal, Canada. [Python code](https://github.com/caow13/BRITS)
+  - Wei Cao, Dong Wang, Jian Li, Hao Zhou, Yitan Li, Lei Li, 2018. [*BRITS: Bidirectional Recurrent Imputation for Time Series*](https://papers.nips.cc/paper/7911-brits-bidirectional-recurrent-imputation-for-time-series.pdf). 32nd Conference on Neural Information Processing Systems (NeurIPS 2018), Montréal, Canada. [[Python code](https://github.com/caow13/BRITS)]
 
-Our publications
+Our Publications
 --------------
 
-- **Xinyu Chen**, Zhaocheng He, Yixian Chen, Yuhuan Lu, Jiawei Wang (2019). **Missing traffic data imputation and pattern discovery with a Bayesian augmented tensor factorization model**. Transportation Research Part C: Emerging Technologies, 104: 66-77. [[preprint](https://xinychen.github.io/paper/BATF.pdf)] [[slide](https://doi.org/10.5281/zenodo.2632552)] [[data](http://doi.org/10.5281/zenodo.1205229)] [[Matlab code](https://github.com/sysuits/BATF)]
+- Xinyu Chen, Lijun Sun (2019). **Bayesian temporal factorization for multidimensional time series prediction**. arxiv. 1910.06366. [[preprint](https://arxiv.org/abs/1910.06366)] [[slide](https://xinychen.github.io/paper/Bayesian-temporal-factorization-slide.pdf)] [[data & Python code](https://github.com/xinychen/transdim)]
 
-- **Xinyu Chen**, Zhaocheng He, Lijun Sun (2019). **A Bayesian tensor decomposition approach for spatiotemporal traffic data imputation**. Transportation Research Part C: Emerging Technologies, 98: 73-84. [[preprint](https://www.researchgate.net/publication/329177786_A_Bayesian_tensor_decomposition_approach_for_spatiotemporal_traffic_data_imputation)] [[doi](https://doi.org/10.1016/j.trc.2018.11.003)] [[data](http://doi.org/10.5281/zenodo.1205229)] [[Matlab code](https://github.com/lijunsun/bgcp_imputation)] [[Imputation example in Jupyter notebook (Matlab)](https://nbviewer.jupyter.org/github/xinychen/transdim/blob/master/BGCP_example.ipynb)] [[Jupyter notebook (Python)](https://nbviewer.jupyter.org/github/xinychen/transdim/blob/master/Imputation-BGCP-Gdata.ipynb)]
+- Xinyu Chen, Zhaocheng He, Yixian Chen, Yuhuan Lu, Jiawei Wang (2019). **Missing traffic data imputation and pattern discovery with a Bayesian augmented tensor factorization model**. Transportation Research Part C: Emerging Technologies, 104: 66-77. [[preprint](https://xinychen.github.io/paper/BATF.pdf)] [[doi](https://doi.org/10.1016/j.trc.2019.03.003)] [[slide](https://doi.org/10.5281/zenodo.2632552)] [[data](http://doi.org/10.5281/zenodo.1205229)] [[Matlab code](https://github.com/sysuits/BATF)]
 
-- **Xinyu Chen**, Zhaocheng He, Jiawei Wang (2018). **Spatial-temporal traffic speed patterns discovery and incomplete data recovery via SVD-combined tensor decomposition**. Transportation Research Part C: Emerging Technologies, 86: 59-77. [[doi](http://doi.org/10.1016/j.trc.2017.10.023)] [[data](http://doi.org/10.5281/zenodo.1205229)]
+- Xinyu Chen, Zhaocheng He, Lijun Sun (2019). **A Bayesian tensor decomposition approach for spatiotemporal traffic data imputation**. Transportation Research Part C: Emerging Technologies, 98: 73-84. [[preprint](https://www.researchgate.net/publication/329177786_A_Bayesian_tensor_decomposition_approach_for_spatiotemporal_traffic_data_imputation)] [[doi](https://doi.org/10.1016/j.trc.2018.11.003)] [[data](http://doi.org/10.5281/zenodo.1205229)] [[Matlab code](https://github.com/lijunsun/bgcp_imputation)] [[Python code](https://github.com/xinychen/transdim/blob/master/experiments/Imputation-BGCP.ipynb)]
 
-  >Please consider citing our papers if they help your research.
+- Xinyu Chen, Zhaocheng He, Jiawei Wang (2018). **Spatial-temporal traffic speed patterns discovery and incomplete data recovery via SVD-combined tensor decomposition**. Transportation Research Part C: Emerging Technologies, 86: 59-77. [[doi](http://doi.org/10.1016/j.trc.2017.10.023)] [[data](http://doi.org/10.5281/zenodo.1205229)]
 
-Our blog posts (in Chinese)
+  >This project is from our papers, please consider citing our papers if they help your research.
+
+Collaborators
 --------------
 
-  - [贝叶斯泊松分解变分推断笔记](https://yxnchen.github.io/research/%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%B3%8A%E6%9D%BE%E5%88%86%E8%A7%A3%E5%8F%98%E5%88%86%E6%8E%A8%E6%96%AD%E7%AC%94%E8%AE%B0/), by Yixian Chen (陈一贤).
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/xinychen"><img src="https://github.com/xinychen.png?size=80" width="80px;" alt="Xinyu Chen"/><br /><sub><b>Xinyu Chen</b></sub></a><br /><a href="https://github.com/xinychen/transdim/commits?author=xinychen" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/Vadermit"><img src="https://github.com/Vadermit.png?size=80" width="80px;" alt="Jinming Yang"/><br /><sub><b>Jinming Yang</b></sub></a><br /><a href="https://github.com/xinychen/transdim/commits?author=Vadermit" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/yxnchen"><img src="https://github.com/yxnchen.png?size=80" width="80px;" alt="Yixian Chen"/><br /><sub><b>Yixian Chen</b></sub></a><br /><a href="https://github.com/xinychen/transdim/commits?author=yxnchen" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/lijunsun"><img src="https://github.com/lijunsun.png?size=80" width="80px;" alt="Lijun Sun"/><br /><sub><b>Lijun Sun</b></sub></a><br /><a href="https://github.com/xinychen/transdim/commits?author=lijunsun" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/HanTY"><img src="https://github.com/HanTY.png?size=80" width="80px;" alt="Tianyang Han"/><br /><sub><b>Tianyang Han</b></sub></a><br /><a href="https://github.com/xinychen/transdim/commits?author=HanTY" title="Code">💻</a></td>
+<!--   </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/xxxx"><img src="https://github.com/xxxx.png?size=100" width="100px;" alt="xxxx"/><br /><sub><b>xxxx</b></sub></a><br /><a href="https://github.com/xinychen/transdim/commits?author=xxxx" title="Code">💻</a></td> -->
+  </tr>
+</table>
 
-  - [变分贝叶斯推断笔记](https://yxnchen.github.io/research/%E5%8F%98%E5%88%86%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%8E%A8%E6%96%AD%E7%AC%94%E8%AE%B0/), by Yixian Chen (陈一贤).
+- **Principal Investigator (PI)**
 
-  - [贝叶斯高斯张量分解](https://zhuanlan.zhihu.com/p/47049414), by Xinyu Chen (陈新宇).
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/lijunsun"><img src="https://github.com/lijunsun.png?size=80" width="80px;" alt="Lijun Sun"/><br /><sub><b>Lijun Sun</b></sub></a><br /><a href="https://github.com/xinychen/transdim/commits?author=lijunsun" title="Code">💻</a></td>
+  </tr>
+</table>
 
-  - [贝叶斯矩阵分解](https://zhuanlan.zhihu.com/p/26067454), by Xinyu Chen (陈新宇).
+See the list of [contributors](https://github.com/xinychen/transdim/graphs/contributors) who participated in this project.
 
-  - [时序矩阵分解 | 时序数据修补与预测](https://zhuanlan.zhihu.com/p/56105537), by Jamie Yang (杨津铭).
 
-  - [如何用贝叶斯概率矩阵分解修复缺失数据？(Jupyter notebook - Python)](https://zhuanlan.zhihu.com/p/63351454), by Xinyu Chen (陈新宇).
+Acknowledgements
+--------------
 
-  - [如何用贝叶斯高斯张量分解修复缺失数据？(Jupyter notebook - Python)](https://zhuanlan.zhihu.com/p/59196946), by Xinyu Chen (陈新宇).
+
+If you have any suggestion, please feel free to contact Xinyu Chen (email: chenxy346@mail2.sysu.edu.cn) and send your suggestions. We would like to thank everyone who has helped this project in any way.
+
+> Recommended email subject: Suggestions on transdim from [+ your name].
+
+
 
 License
 --------------
